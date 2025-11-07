@@ -117,7 +117,7 @@ npm -v
 
 ```bash
 # Clone du dépôt
-git clone https://github.com/osscoco/rap-connect-front.git
+git clone https://github.com/osscoco/e-club-front.git
 ```
 
 ```bash
@@ -159,7 +159,7 @@ _Contenu de 'environment.preproduction.ts'_
 ```bash
 export const environment = {
     production: true,
-    apiUrl: 'https://rap-connect-back.onrender.com',
+    apiUrl: 'https://e-club-back.onrender.com',
     debug: false
 };
 ```
@@ -189,17 +189,17 @@ npm run start:local
 - Se rendre sur [OnRender](https://onrender.com/)
     - Se connecter
     - Créer un nouveau projet (Static Site) :
-        - Linker au repository https://github.com/osscoco/rap-connect-front
-        - Name : rap-connect-front
+        - Linker au repository https://github.com/osscoco/e-club-front
+        - Name : e-club-front
         - Branch Git : master
         - Build Command : $ bash deploy-preproduction.sh
-        - Publish Directory : dist/rapconnect/browser
+        - Publish Directory : dist/eclub/browser
         - Auto-Deploy : On Commit
         - Pr Previews : Off
         - Service Notifications : Use workspace default (Only failure notifications)
         - Preview Environment Notifications : Use account default (Disabled)
         - Environment Variables : 
-            - apiUrl : https://rap-connect-back.onrender.com
+            - apiUrl : https://e-club-back.onrender.com
             - production : true
             - debug : false
         - Redirects/Rewrites : 
