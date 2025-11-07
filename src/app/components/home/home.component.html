@@ -1,0 +1,115 @@
+<!-- Section 1 -->
+<div class="bg-black shadow-md h-auto mt-16 flex flex-col items-center px-4 py-8">
+    <!-- Titre Section -->
+    <label class="text-white text-md mt-4 mb-2 text-center">LE PREMIER RÉSEAU</label>
+    <label class="text-white text-4xl sm:text-5xl md:text-6xl mb-8 text-center">RAP CONNECT</label>
+    <!-- Liste déroulante ARTISTES / PROFESSIONNELS -->
+    <div class="flex flex-col md:flex-row gap-4 items-center w-full md:w-auto">
+        <div class="dropdown w-full md:w-50 lg:w-64">
+            <label tabindex="0" class="btn rounded-full w-full bg-red-500 text-black border-transparent hover:bg-black hover:text-white hover:border-white">
+                Professionnels
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m6 9 6 6 6-6"/>
+                </svg>
+            </label>
+            <!-- Contenu Liste déroulante ARTISTES / PROFESSIONNELS -->
+            <div tabindex="0" class="dropdown-content z-[1] p-4 shadow bg-base-100 rounded-box w-full min-w-full md:w-[205%]">
+                <div class="grid gap-2 grid-cols-1 min-[375px]:grid-cols-2 md:grid-cols-3 md:grid-rows-6 md:gap-3 max-h-[10rem] md:max-h-none overflow-y-auto">
+                    <label *ngFor="let subChoice of subChoices; let i = index" class="label cursor-pointer justify-start gap-2 text-xs">
+                        <input type="checkbox" class="checkbox checkbox-sm" [checked]="subChoice.checked" (change)="onCheckboxChange(i, $event)"/>
+                        <span>{{ subChoice.name }}</span>
+                    </label>
+                </div>
+                <div class="mt-4">
+                    <button class="btn btn-sm bg-red-500 text-black w-full" (click)="search()">Rechercher</button>
+                </div>
+            </div>
+        </div>
+        <!-- Bouton Se connecter -->
+        <ng-container *ngIf="(isAuthenticated$ | async) === false">
+            <button (click)="login()" class="btn w-full md:w-50 lg:w-64 rounded-full bg-black text-white border border-transparent hover:bg-red-500 hover:text-black hover:border-white">
+                Connexion
+                <div class="indicator">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-log-in-icon lucide-log-in"><path d="m10 17 5-5-5-5"/><path d="M15 12H3"/><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/></svg>
+                </div>
+            </button>
+        </ng-container>
+
+        <!-- Bouton Profil -->
+        <ng-container *ngIf="(isAuthenticated$ | async) === true">
+            <button (click)="profil()" class="btn w-full md:w-50 lg:w-64 rounded-full bg-black text-white border border-transparent hover:bg-red-500 hover:text-black hover:border-white">
+                Profil
+                <div class="indicator">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-round-icon lucide-user-round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
+                </div>
+            </button>
+        </ng-container>
+    </div>
+</div>
+
+<!-- Section 2 -->
+<section class="w-full px-4 py-12 bg-black">
+    <!-- Titre Section -->
+    <div class="mb-8">
+        <h2 class="text-white text-2xl sm:text-3xl font-bold">CLIPS</h2>
+    </div>
+    <!-- Corp Section -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
+        <ng-container *ngFor="let clip of clips; let i = index">
+            <!-- Card -->
+            <div class="card bg-base-100 shadow-md w-full">
+                <!-- Tête de Card -->
+                <div class="relative w-full aspect-video rounded-t-xl overflow-hidden"> 
+                    <iframe
+                        [src]="clip.link | ytEmbedUrl"
+                        title="YouTube video"
+                        class="absolute inset-0 w-full h-full border-0"
+                        loading="lazy"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <!-- Footer de Card -->
+                <div class="card-body items-start">
+                    <!-- Pseudo de l'artiste -->
+                    <p class="text-sm font-semibold text-base-content">{{ clip.user.pseudo }}</p>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</section>
+
+<!-- Section 3 -->
+<section class="w-full px-4 py-12 bg-black">
+    <!-- Titre Section -->
+    <div class="mb-8">
+        <h2 class="text-white text-2xl sm:text-3xl font-bold">PRODS</h2>
+    </div>
+    <!-- Corp Section -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
+        <ng-container *ngFor="let prod of prods; let i = index">
+            <!-- Card -->
+            <div class="card bg-base-100 shadow-md w-full">
+                <!-- Tête de Card -->
+                <div class="relative w-full aspect-video rounded-t-xl overflow-hidden"> 
+                    <iframe
+                        [src]="prod.link | ytEmbedUrl"
+                        title="YouTube video"
+                        class="absolute inset-0 w-full h-full border-0"
+                        loading="lazy"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <!-- Footer de Card -->
+                <div class="card-body items-start">
+                    <!-- Pseudo du beatmaker -->
+                    <p class="text-sm font-semibold text-base-content">{{ prod.user.pseudo }}</p>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</section>

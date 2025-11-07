@@ -1,0 +1,93 @@
+<section class="mt-16 w-full px-4 py-12 bg-black">
+    <!-- Titre Section -->
+    <div class="mb-8">
+        <h2 class="text-white text-2xl sm:text-3xl font-bold">CONNEXION</h2>
+    </div>
+    <!-- Corps Section -->
+    <div class="mx-auto w-full max-w-md">
+        <div class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+                <!-- Formulaire Login -->
+                <form [formGroup]="form" (ngSubmit)="submit()" class="space-y-4">
+                    <!-- Email -->
+                    <label class="form-control w-full">
+                        <div class="label">
+                            <span class="label-text">Email</span><span class="text-red-500">*</span>
+                        </div>
+                        <input type="email" formControlName="email" class="input input-bordered w-full mb-5" placeholder="votre.email@exemple.com"autocomplete="email" />
+                        <div class="label h-5">
+                            <span class="label-text-alt text-error" *ngIf="email.touched && email.invalid">
+                                <ng-container *ngIf="email.errors?.['required']">L'email est requis.</ng-container>
+                                <ng-container *ngIf="email.errors?.['email']">Format d'email invalide.</ng-container>
+                            </span>
+                        </div>
+                        <div>&nbsp;</div>
+                    </label>
+                    <!-- Mot de passe -->
+                    <label class="form-control w-full">
+                        <div class="label">
+                            <span class="label-text">Mot de passe</span><span class="text-red-500">*</span>
+                        </div>
+                        <div class="join" style="width: -webkit-fill-available;">
+                            <input [type]="showPwd ? 'text' : 'password'" formControlName="password" class="input input-bordered w-full mb-5" placeholder="••••••••" autocomplete="current-password" />
+                            <button
+                                type="button"
+                                class="btn btn-ghost join-item"
+                                (click)="showPwd = !showPwd"
+                                [attr.aria-pressed]="showPwd"
+                                [attr.aria-label]="showPwd ? 'Masquer le mot de passe' : 'Afficher le mot de passe'"
+                                >
+                                <!-- Icône œil (afficher) -->
+                                <svg *ngIf="!showPwd" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M2.036 12.322a1.012 1.012 0 010-.644C3.423 7.51 7.36 5 12 5c4.64 0 8.577 2.51 9.964 6.678.07.214.07.43 0 .644C20.577 16.49 16.64 19 12 19c-4.64 0-8.577-2.51-9.964-6.678z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+
+                                <!-- Icône œil barré (masquer) -->
+                                <svg *ngIf="showPwd" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M3 3l18 18M10.584 10.584A3 3 0 0013.5 13.5M6.532 6.532C4.58 7.68 3.17 9.4 2.536 11.322a1.012 1.012 0 000 .356C3.923 15.49 7.86 18 12.5 18c1.33 0 2.6-.2 3.78-.572M9.75 5.27A10.4 10.4 0 0112.5 5c4.64 0 8.577 2.51 9.964 6.678.07.214.07.43 0 .644-.33.96-.86 1.84-1.55 2.61" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="label h-5">
+                            <span class="label-text-alt text-error" *ngIf="password.touched && password.invalid">
+                                <ng-container *ngIf="password.errors?.['required']">Le mot de passe est requis.</ng-container>
+                                <ng-container *ngIf="password.errors?.['minlength']">
+                                Minimum {{ password.errors?.['minlength']?.requiredLength }} caractères.
+                                </ng-container>
+                            </span>
+                        </div>
+                        <div>&nbsp;</div>
+                    </label>
+                    <!-- Erreur globale -->
+                    <p *ngIf="error" class="text-error text-sm">{{ error }}</p>
+                    <!-- Validation Formulaire -->
+                    <button class="btn bg-red-500 text-white w-full" [disabled]="form.invalid">
+                        <span>Se connecter</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+        <!-- Lien Inscription -->
+        <p class="text-center text-sm text-base-content/70 mt-4">
+            Pas encore de compte ?
+            <a (click)="register()" class="text-red-500 hover:text-white font-medium no-underline cursor-pointer">
+                S'inscrire
+            </a>
+        </p>
+        <!-- Lien Mot de passe oublié  -->
+        <p class="text-center text-sm text-base-content/70 mt-4">
+            <!-- <a (click)="resetPasswordSetMail()" class="text-red-500 hover:text-white font-medium no-underline cursor-pointer">
+               Mot de passe oublié ? 
+            </a> -->
+            <a class="text-red-500 hover:text-white font-medium no-underline cursor-pointer">
+               Mot de passe oublié ? (Bientôt Disponible)
+            </a>
+        </p>
+    </div>
+</section>

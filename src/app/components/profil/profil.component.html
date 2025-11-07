@@ -1,0 +1,276 @@
+<section class="mt-16 w-full px-4 py-12 bg-black">
+    <!-- Titre Section -->
+    <div class="mb-8">
+        <h2 class="text-white text-2xl sm:text-3xl font-bold">PROFIL</h2>
+    </div>
+
+    <div class="divider">Modifier son compte</div>
+
+    <!-- Corps Section -->
+    <div class="mx-auto w-full max-w-3xl">
+        <div class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+                <!-- Formulaire Update -->
+                <form [formGroup]="formUpdate" (ngSubmit)="submitUpdate()" class="space-y-6">
+                    <!-- Ligne: Email | Pseudo -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Email -->
+                        <label class="form-control w-full">
+                            <div class="label">
+                                <span class="label-text">Email</span><span class="text-red-500">*</span>
+                            </div>
+                            <input type="email" formControlName="email" class="input input-bordered w-full" autocomplete="email" />
+                            <div class="label h-5">
+                                <span class="label-text-alt text-error" *ngIf="emailUpdate.touched && emailUpdate.invalid">
+                                    <ng-container *ngIf="emailUpdate.errors?.['required']">L'email est requis.</ng-container>
+                                    <ng-container *ngIf="emailUpdate.errors?.['email']">Format d'email invalide.</ng-container>
+                                    <ng-container *ngIf="emailUpdate.errors?.['maxlength']">
+                                        Maximum {{ emailUpdate.errors?.['maxlength']?.requiredLength }} caractères.
+                                    </ng-container>
+                                </span>
+                            </div>
+                        </label>
+                        <!-- Pseudo -->
+                        <label class="form-control w-full">
+                            <div class="label">
+                                <span class="label-text">Pseudo</span><span class="text-red-500">*</span>
+                            </div>
+                            <input type="text" formControlName="pseudo" class="input input-bordered w-full" placeholder="Pseudo" autocomplete="nickname" />
+                            <div class="label h-5">
+                                <span class="label-text-alt text-error" *ngIf="pseudoUpdate.touched && pseudoUpdate.invalid">
+                                    <ng-container *ngIf="pseudoUpdate.errors?.['required']">Le pseudo est requis.</ng-container>
+                                    <ng-container *ngIf="pseudoUpdate.errors?.['maxlength']">
+                                        Maximum {{ pseudoUpdate.errors?.['maxlength']?.requiredLength }} caractères.
+                                    </ng-container>
+                                </span>
+                            </div>
+                        </label>
+                    </div>
+                    <!-- Ligne: Choix Artiste | Choix Professionnel -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6"> 
+                        <!-- Bloc Artiste -->
+                        <div>
+                            <div class="label">
+                                <span class="label-text font-medium">Choix Artiste</span><span class="text-red-500">*</span>
+                            </div>
+                            <ul class="grid gap-2">
+                                <li *ngFor="let o of subChoicesArtiste; let i = index;">
+                                    <label class="label cursor-pointer justify-start gap-2">
+                                        <input type="checkbox" class="checkbox checkbox-sm" [checked]="isSelected(o.subChoiceId)" (change)="onToggleSelected(o.subChoiceId, $event)"/>
+                                        <span>{{ o.name }}</span>
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- Bloc Professionnel -->
+                        <div>
+                            <div class="label">
+                                <span class="label-text font-medium">Choix Professionnel</span><span class="text-red-500">*</span>
+                            </div>
+                            <ul class="grid gap-2 md:grid-cols-2">
+                                <li *ngFor="let o of subChoicesProfessionnel">
+                                    <label class="label cursor-pointer justify-start gap-2">
+                                        <input type="checkbox" class="checkbox checkbox-sm" [checked]="isSelected(o.subChoiceId)" (change)="onToggleSelected(o.subChoiceId, $event)" />
+                                        <span>{{ o.name }}</span>
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="divider text-red-500">Confirmer la modification</div>
+
+                    <!-- Ligne: Mot de passe | Confirmation -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Mot de passe -->
+                        <label class="form-control w-full">
+                            <div class="label">
+                                <span class="label-text">Mot de passe</span><span class="text-red-500">*</span>
+                            </div>
+                            <div class="join" style="width: -webkit-fill-available;">
+                                <input [type]="showPwdUpdate ? 'text' : 'password'" formControlName="password" class="input input-bordered w-full" placeholder="••••••••" autocomplete="new-password" />
+                                <button
+                                    type="button"
+                                    class="btn btn-ghost join-item"
+                                    (click)="showPwdUpdate = !showPwdUpdate"
+                                    [attr.aria-pressed]="showPwdUpdate"
+                                    [attr.aria-label]="showPwdUpdate ? 'Masquer le mot de passe' : 'Afficher le mot de passe'"
+                                    >
+                                    <!-- Icône œil (afficher) -->
+                                    <svg *ngIf="!showPwdUpdate" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M2.036 12.322a1.012 1.012 0 010-.644C3.423 7.51 7.36 5 12 5c4.64 0 8.577 2.51 9.964 6.678.07.214.07.43 0 .644C20.577 16.49 16.64 19 12 19c-4.64 0-8.577-2.51-9.964-6.678z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>
+
+                                    <!-- Icône œil barré (masquer) -->
+                                    <svg *ngIf="showPwdUpdate" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M3 3l18 18M10.584 10.584A3 3 0 0013.5 13.5M6.532 6.532C4.58 7.68 3.17 9.4 2.536 11.322a1.012 1.012 0 000 .356C3.923 15.49 7.86 18 12.5 18c1.33 0 2.6-.2 3.78-.572M9.75 5.27A10.4 10.4 0 0112.5 5c4.64 0 8.577 2.51 9.964 6.678.07.214.07.43 0 .644-.33.96-.86 1.84-1.55 2.61" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="label h-5">
+                                <span class="label-text-alt text-error" *ngIf="passwordUpdate.touched && passwordUpdate.invalid">
+                                    <ng-container *ngIf="passwordUpdate.errors?.['required']">Le mot de passe est requis.</ng-container>
+                                    <ng-container *ngIf="passwordUpdate.errors?.['maxlength']">
+                                        Maximum {{ passwordUpdate.errors?.['maxlength']?.requiredLength }} caractères.
+                                    </ng-container>
+                                </span>
+                            </div>
+                        </label>
+                        <!-- Confirmation mot de passe -->
+                        <label class="form-control w-full">
+                            <div class="label">
+                                <span class="label-text">Confirmation</span><span class="text-red-500">*</span>
+                            </div>
+                            <div class="join" style="width: -webkit-fill-available;">
+                                <input [type]="showPwdConfirmUpdate ? 'text' : 'password'" formControlName="confirmPassword" class="input input-bordered w-full" placeholder="••••••••" autocomplete="new-password" />
+                                <button
+                                    type="button"
+                                    class="btn btn-ghost join-item"
+                                    (click)="showPwdConfirmUpdate = !showPwdConfirmUpdate"
+                                    [attr.aria-pressed]="showPwdConfirmUpdate"
+                                    [attr.aria-label]="showPwdConfirmUpdate ? 'Masquer le mot de passe' : 'Afficher le mot de passe'"
+                                    >
+                                    <!-- Icône œil (afficher) -->
+                                    <svg *ngIf="!showPwdConfirmUpdate" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M2.036 12.322a1.012 1.012 0 010-.644C3.423 7.51 7.36 5 12 5c4.64 0 8.577 2.51 9.964 6.678.07.214.07.43 0 .644C20.577 16.49 16.64 19 12 19c-4.64 0-8.577-2.51-9.964-6.678z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>
+
+                                    <!-- Icône œil barré (masquer) -->
+                                    <svg *ngIf="showPwdConfirmUpdate" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M3 3l18 18M10.584 10.584A3 3 0 0013.5 13.5M6.532 6.532C4.58 7.68 3.17 9.4 2.536 11.322a1.012 1.012 0 000 .356C3.923 15.49 7.86 18 12.5 18c1.33 0 2.6-.2 3.78-.572M9.75 5.27A10.4 10.4 0 0112.5 5c4.64 0 8.577 2.51 9.964 6.678.07.214.07.43 0 .644-.33.96-.86 1.84-1.55 2.61" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="label h-5">
+                                <span class="label-text-alt text-error" *ngIf="formUpdate.hasError('passwordMismatch') && confirmPasswordUpdate.touched">
+                                Les mots de passe ne correspondent pas.
+                                </span>
+                            </div>
+                        </label>
+                    </div>
+                    <!-- Erreur globale -->
+                    <p *ngIf="error" class="text-error text-sm">{{ error }}</p>
+                    <!-- Validation Formulaire -->
+                    <button class="btn bg-red-500 text-white w-full" [disabled]="formUpdate.invalid">
+                        <span>Modifier</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="divider">Supprimer son compte</div>
+
+    <div class="mx-auto w-full max-w-3xl">
+        <div class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+                <!-- Formulaire Delete -->
+                <form [formGroup]="formDelete" (ngSubmit)="submitDelete()" class="space-y-6">
+
+                    <div class="divider text-red-500">Confirmer la suppression</div>
+
+                    <!-- Ligne: Mot de passe | Confirmation -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Mot de passe -->
+                        <label class="form-control w-full">
+                            <div class="label">
+                                <span class="label-text">Mot de passe</span><span class="text-red-500">*</span>
+                            </div>
+                            <div class="join" style="width: -webkit-fill-available;">
+                                <input [type]="showPwdDelete ? 'text' : 'password'" formControlName="password" class="input input-bordered w-full" placeholder="••••••••" autocomplete="new-password" />
+                                <button
+                                    type="button"
+                                    class="btn btn-ghost join-item"
+                                    (click)="showPwdDelete = !showPwdDelete"
+                                    [attr.aria-pressed]="showPwdDelete"
+                                    [attr.aria-label]="showPwdDelete ? 'Masquer le mot de passe' : 'Afficher le mot de passe'"
+                                    >
+                                    <!-- Icône œil (afficher) -->
+                                    <svg *ngIf="!showPwdDelete" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M2.036 12.322a1.012 1.012 0 010-.644C3.423 7.51 7.36 5 12 5c4.64 0 8.577 2.51 9.964 6.678.07.214.07.43 0 .644C20.577 16.49 16.64 19 12 19c-4.64 0-8.577-2.51-9.964-6.678z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>
+
+                                    <!-- Icône œil barré (masquer) -->
+                                    <svg *ngIf="showPwdDelete" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M3 3l18 18M10.584 10.584A3 3 0 0013.5 13.5M6.532 6.532C4.58 7.68 3.17 9.4 2.536 11.322a1.012 1.012 0 000 .356C3.923 15.49 7.86 18 12.5 18c1.33 0 2.6-.2 3.78-.572M9.75 5.27A10.4 10.4 0 0112.5 5c4.64 0 8.577 2.51 9.964 6.678.07.214.07.43 0 .644-.33.96-.86 1.84-1.55 2.61" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="label h-5">
+                                <span class="label-text-alt text-error" *ngIf="passwordDelete.touched && passwordDelete.invalid">
+                                    <ng-container *ngIf="passwordDelete.errors?.['required']">Le mot de passe est requis.</ng-container>
+                                    <ng-container *ngIf="passwordDelete.errors?.['maxlength']">
+                                        Maximum {{ passwordDelete.errors?.['maxlength']?.requiredLength }} caractères.
+                                    </ng-container>
+                                </span>
+                            </div>
+                        </label>
+                        <!-- Confirmation mot de passe -->
+                        <label class="form-control w-full">
+                            <div class="label">
+                                <span class="label-text">Confirmation mot de passe</span><span class="text-red-500">*</span>
+                            </div>
+                            <div class="join" style="width: -webkit-fill-available;">
+                                <input [type]="showPwdConfirmDelete ? 'text' : 'password'" formControlName="confirmPassword" class="input input-bordered w-full" placeholder="••••••••" autocomplete="new-password" />
+                                <button
+                                    type="button"
+                                    class="btn btn-ghost join-item"
+                                    (click)="showPwdConfirmDelete = !showPwdConfirmDelete"
+                                    [attr.aria-pressed]="showPwdConfirmDelete"
+                                    [attr.aria-label]="showPwdConfirmDelete ? 'Masquer le mot de passe' : 'Afficher le mot de passe'"
+                                    >
+                                    <!-- Icône œil (afficher) -->
+                                    <svg *ngIf="!showPwdConfirmDelete" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M2.036 12.322a1.012 1.012 0 010-.644C3.423 7.51 7.36 5 12 5c4.64 0 8.577 2.51 9.964 6.678.07.214.07.43 0 .644C20.577 16.49 16.64 19 12 19c-4.64 0-8.577-2.51-9.964-6.678z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>
+
+                                    <!-- Icône œil barré (masquer) -->
+                                    <svg *ngIf="showPwdConfirmDelete" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M3 3l18 18M10.584 10.584A3 3 0 0013.5 13.5M6.532 6.532C4.58 7.68 3.17 9.4 2.536 11.322a1.012 1.012 0 000 .356C3.923 15.49 7.86 18 12.5 18c1.33 0 2.6-.2 3.78-.572M9.75 5.27A10.4 10.4 0 0112.5 5c4.64 0 8.577 2.51 9.964 6.678.07.214.07.43 0 .644-.33.96-.86 1.84-1.55 2.61" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="label h-5">
+                                <span class="label-text-alt text-error" *ngIf="formDelete.hasError('passwordMismatch') && confirmPasswordDelete.touched">
+                                Les mots de passe ne correspondent pas.
+                                </span>
+                            </div>
+                        </label>
+                    </div>
+                    <!-- Erreur globale -->
+                    <p *ngIf="error" class="text-error text-sm">{{ error }}</p>
+                    <!-- Validation Formulaire -->
+                    <button class="btn bg-red-500 text-white w-full" [disabled]="formDelete.invalid">
+                        <span>Supprimer</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</section>

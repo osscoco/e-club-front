@@ -1,0 +1,13 @@
+<div class="fixed z-50 bottom-4 right-4 flex flex-col space-y-3 items-end">
+  <div *ngFor="let t of (svc.toasts$ | async)" class="animate-fade-in">
+    <div class="toast toast-end toast-bottom max-w-max pointer-events-auto">
+      <div [ngClass]="alertClass(t)" class="shadow-lg inline-flex items-center gap-2 px-4 py-2 rounded-lg">
+        <div>
+          <h4 *ngIf="t.title" class="font-semibold mb-0.5">{{ t.title }}</h4>
+          <p class="text-sm">{{ t.message }}</p>
+        </div>
+        <button class="btn btn-ghost btn-xs ml-2" (click)="svc.dismiss(t.id)">✕</button>
+      </div>
+    </div>
+  </div>
+</div>

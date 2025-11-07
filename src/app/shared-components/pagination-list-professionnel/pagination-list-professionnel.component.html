@@ -1,0 +1,92 @@
+<section class="mt-16 w-full px-4 py-12 bg-black">
+
+  <!-- Titre Section -->
+  <div class="mb-8">
+    <h2 class="text-white text-2xl sm:text-3xl font-bold">RECHERCHE</h2>
+  </div>
+
+  <!-- Corps Section -->
+  <div class="mx-auto w-full max-w-7xl">
+
+    <!-- Filtres -->
+    <form class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 mb-8 bg-base-100 p-4 rounded-xl shadow items-center">
+
+      <!-- Filtre catégorie (select) -->
+      <div class="form-control w-full max-w-xs">
+        <div class="dropdown w-full md:w-50 lg:w-64">
+          <label tabindex="0" class="btn rounded-full w-full bg-red-500 text-black border-transparent hover:bg-black hover:text-white hover:border-white">
+            Utilisateurs
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m6 9 6 6 6-6"/>
+            </svg>
+          </label>
+          <div tabindex="0" class="dropdown-content z-[1] p-4 shadow bg-base-100 rounded-box w-full min-w-full md:w-[350%]">
+            <div class="grid gap-2 grid-cols-1 min-[375px]:grid-cols-2 md:grid-cols-4 md:grid-rows-5 md:gap-3 max-h-[10rem] md:max-h-none overflow-y-auto">
+              <label *ngFor="let cat of categories; let i = index; trackBy: trackByCat" class="label cursor-pointer justify-start gap-2 text-xs">
+                <input type="checkbox" class="checkbox checkbox-sm" [checked]="selectedCategories.includes(cat)" (change)="onCategoryCheckboxChange(cat, $event)"/>
+                <span>{{ cat }}</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>    
+
+      <!-- Filtre recherche text -->
+      <div class="form-control">
+        <input type="text" class="input input-bordered" placeholder="Ex: Nom Prénom" (input)="onSearchTextChange($event)" />
+      </div>
+
+    </form>
+
+    <!-- Nouveau -->
+    <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <article *ngFor="let user of filteredItems" class="card bg-base-100 shadow-sm hover:shadow-xl transition-shadow duration-200">
+
+        <div class="card w-full max-w-xs bg-base-100 shadow-lg items-center text-center self-center p-6">
+          <figure class="mb-4">
+            <img [src]="user.userType == 1 ? this.player : user.userType == 2 ? this.coach : user.userType == 3 ? this.admin : this.undefined" alt="CoFounder_1" class="w-36 h-36 rounded-full object-cover" />
+          </figure>
+          <div class="mb-5">
+            <h2 class="text-xl font-semibold mb-2">{{ user.pseudo }}</h2>
+          </div>
+          <div class="card-actions justify-center" *ngIf="user.choices?.length">
+            <ng-container *ngIf="user.choices?.length > 1; else oneOrZero">
+              <div *ngFor="let choice of user.choices?.slice(0, 1)" class="badge badge-outline">
+                <small class="text-xs">{{ choice.subChoice.name }}</small>
+              </div>
+              <div class="badge badge-outline">...</div>
+            </ng-container>
+            <ng-template #oneOrZero>
+              <div *ngFor="let choice of user.choices" class="badge badge-outline">
+                <small class="text-xs">{{ choice.subChoice.name }}</small>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+
+      </article>
+    </div>
+
+    <!-- Choix du nombre d'éléments par page -->
+    <div class="flex items-center justify-end mb-6 mt-6">
+      <label class="mr-2 text-sm font-medium text-white">Éléments par page :</label>
+      <select class="select select-bordered select-sm w-28" (change)="onItemsPerPageChange($event)">
+        <option [value]="3">3</option>
+        <option [value]="6" selected>6</option>
+        <option [value]="9">9</option>
+        <option [value]="12">12</option>
+      </select>
+    </div>
+
+    <!-- Pagination -->
+    <div class="flex justify-center mt-10">
+      <div class="join">
+        <button class="join-item btn" (click)="previousPage()">Préc.</button>
+        <button class="join-item btn btn-active">{{ currentPage }}</button>
+        <button class="join-item btn" (click)="nextPage()">Suiv.</button>
+      </div>
+    </div>
+
+  </div>
+
+</section>
